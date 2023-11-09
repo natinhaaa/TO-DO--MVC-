@@ -98,47 +98,50 @@ class ControllerExcluirTarefa:
         cont = 0
 
         try:
+            indice = int(indice)
+
             if indice == str:
-                print("Insira um índice válido.")
-
-            for tarefas in TODO.ListarTarefa():
-                cont += 1
-
-                if cont > 0:
-                    status_separado = tarefas[0]
-
-                    if status_separado == statusA:
-                        separacao = tarefas.split("\t", 3)               
-                        id_separado = int(separacao[1])
-                        listaids.append(id_separado)
-                        indice = int(indice)
-
-            if indice <= 0:
-                print("Tarefa inválida.")
+                print("Indice inválido, tente novamente.")
             
-            elif indice <= len(listaids):
-                indice -=1
-                cont = -1
+            elif indice <= 0:
+                print("Indice inválido, tente novamente.")
 
+            else:
                 for tarefas in TODO.ListarTarefa():
                     cont += 1
 
                     if cont > 0:
-                        separacao = tarefas.split("\t", 3)               
-                        id_separado = int(separacao[1])
+                        status_separado = tarefas[0]
 
-                        descTarefa = tarefas[7:]
+                        if status_separado == statusA:
+                            separacao = tarefas.split("\t", 3)               
+                            id_separado = int(separacao[1])
+                            listaids.append(id_separado)
 
-                        #aqui irá comparar o id correspondente ao indice solicitado pelo usuario com os ids dentro da lista de tarefas, até encontrar uma correspondencia
-                        if id_separado == listaids[indice]:
-                            # print(listaids[indice])  #teste
+                
+                if indice <= len(listaids):
+                    indice -=1
+                    cont = -1
 
-                            tarefaAlterada = (f"{statusE}\t{id_separado}\t{descTarefa}")
-                            if TODO.AlterarTarefa(tarefas, tarefaAlterada) == True:
-                                print("Tarefa excluída.")
-                                break
-            else:
-                print("Tarefa inválida.")
+                    for tarefas in TODO.ListarTarefa():
+                        cont += 1
+
+                        if cont > 0:
+                            separacao = tarefas.split("\t", 3)               
+                            id_separado = int(separacao[1])
+
+                            descTarefa = tarefas[7:]
+
+                            #aqui irá comparar o id correspondente ao indice solicitado pelo usuario com os ids dentro da lista de tarefas, até encontrar uma correspondencia
+                            if id_separado == listaids[indice]:
+                                # print(listaids[indice])  #teste
+
+                                tarefaAlterada = (f"{statusE}\t{id_separado}\t{descTarefa}")
+                                if TODO.AlterarTarefa(tarefas, tarefaAlterada) == True:
+                                    print("Tarefa excluída.")
+                                    break
+                else:
+                    print("Indice inválido, tente novamente.")
 
         except Exception as erro:
             print(erro)
@@ -152,8 +155,13 @@ class ControllerAlterarTarefa:
         cont = 0
 
         try:
+            indice = int(indice)
+
             if novaDescricao == "":
                 print("Tarefa inválida.")
+            
+            elif indice <= 0:
+                print("Indice inválido, tente novamente.")
 
             else:
                 for tarefas in TODO.ListarTarefa():
@@ -166,7 +174,6 @@ class ControllerAlterarTarefa:
                             separacao = tarefas.split("\t", 3)               
                             id_separado = int(separacao[1])
                             listaids.append(id_separado)
-                            indice = int(indice)
                 
                 #aqui será analisado se o indice que o usuario deseja excluir é menor ou igual às tarefas que são ativas presentes na lista
                 #se o indice for maior, por exemplo, é porque o usuario digitou uma tarefa que não há na lista
@@ -202,7 +209,7 @@ class ControllerAlterarTarefa:
                                 else:
                                     break
                 else:
-                    print("Indice inválido, tente novamente")
+                    print("Indice inválido, tente novamente.")
 
         except Exception as erro:
             print(erro)
@@ -242,34 +249,39 @@ class ControllerConcluirTarefa:
         cont = -1
 
         try:
-            for tarefas in TODO.ListarTarefa():
-                cont += 1
-                if cont >= 1:
-                    status_separado = tarefas[:1]
-                    if status_separado == statusA:
-                        separacao = tarefas.split("\t", 4)               
-                        id_separado = int(separacao[1])
-                        listaids.append(id_separado)
-                        indice = int(indice)
+            indice = int(indice)
 
-            if indice <= len(listaids):
-                indice -=1
-                cont = -1
+            if indice <= 0:
+                print("Indice inválido, tente novamente.")
 
+            else:
                 for tarefas in TODO.ListarTarefa():
                     cont += 1
-
                     if cont >= 1:
-                        separacao = tarefas.split("\t", 4)               
-                        id_separado = int(separacao[1])
-                        descTarefa = tarefas[7:]
-                        if id_separado == listaids[indice]:
-                            tarefaConcluida = (f"{statusC}\t{id_separado}\t{descTarefa}")
-                            if TODO.AlterarTarefa(tarefas, tarefaConcluida) == True:
-                                print("Tarefa marcada como concluída.")
-                                break
-            else:
-                print("Tarefa inválida.")
+                        status_separado = tarefas[:1]
+                        if status_separado == statusA:
+                            separacao = tarefas.split("\t", 4)               
+                            id_separado = int(separacao[1])
+                            listaids.append(id_separado)
+
+                if indice <= len(listaids):
+                    indice -=1
+                    cont = -1
+
+                    for tarefas in TODO.ListarTarefa():
+                        cont += 1
+
+                        if cont >= 1:
+                            separacao = tarefas.split("\t", 4)               
+                            id_separado = int(separacao[1])
+                            descTarefa = tarefas[7:]
+                            if id_separado == listaids[indice]:
+                                tarefaConcluida = (f"{statusC}\t{id_separado}\t{descTarefa}")
+                                if TODO.AlterarTarefa(tarefas, tarefaConcluida) == True:
+                                    print("Tarefa marcada como concluída.")
+                                    break
+                else:
+                    print("Tarefa inválida.")
 
         except Exception as erro:
             print(erro)
