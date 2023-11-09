@@ -8,7 +8,6 @@ class ControllerAdicionarTarefa:
         #aqui utilizamos o método randint da biblioteca que importamos "random", para sortear um número aleatório de 4 digitos, ou seja, entre 1000 e 9999
         idtarefa = str(random.randint(1000,9999))
         statusA = "A"
-        cont = 0
         tamanholista = len(TODO.ListarTarefa())
 
         try:
@@ -33,31 +32,28 @@ class ControllerAdicionarTarefa:
             else:
 
                 for itens in TODO.ListarTarefa():
-                    cont += 1
+                    separacao = itens.split("\t", 3)
+                    id_separado = separacao[1]
 
-                    if cont > 0:
-                        separacao = itens.split("\t", 3)
-                        id_separado = separacao[1]
+                    if idtarefa == id_separado:
+                        idtarefa = random.randint(1000,9999)
+                    
+                    else:
 
-                        if idtarefa == id_separado:
-                            idtarefa = random.randint(1000,9999)
-                        
+                        if tarefa == "":
+                            print("Tarefa inválida.")
+                            break
+
                         else:
+                            adicionar = f"{statusA}\t{idtarefa}\t{tarefa}\n"
 
-                            if tarefa == "":
-                                print("Tarefa inválida.")
+                            if TODO.AdicionarTarefas(adicionar) == True:
+                                print("Tarefa adicionada!")
                                 break
-
+                            
                             else:
-                                adicionar = f"{statusA}\t{idtarefa}\t{tarefa}\n"
-
-                                if TODO.AdicionarTarefas(adicionar) == True:
-                                    print("Tarefa adicionada!")
-                                    break
-                                
-                                else:
-                                    print("Ocorreu algum erro.")
-                                    break
+                                print("Ocorreu algum erro.")
+                                break
 
         except Exception as erro:
             print(erro)

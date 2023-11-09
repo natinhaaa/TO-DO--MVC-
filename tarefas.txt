@@ -1,4 +1,0 @@
-STATUS	ID	TAREFA
-A	6784	dffffffffffffff
-A	3175	llllllllllll
-A	1272	djdjakvkavj
